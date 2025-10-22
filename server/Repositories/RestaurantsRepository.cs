@@ -94,4 +94,16 @@ public class RestaurantsRepository
       throw new Exception(rowsAffected + " ROWS ARE NOW GONE. CHECK YOUR MYSQL MANUAL FOR THE ANSWER AS TO WHY THIS HAS GONE DOWN LIKE THIS. MUSHY MICK IS WATCHING 👀");
     }
   }
+
+  internal void DeleteRestaurant(int restaurantId)
+  {
+    string sql = "DELETE FROM restaurants WHERE id = @restaurantId LIMIT 1;";
+
+    int rowsAffected = _db.Execute(sql, new { restaurantId });
+
+    if (rowsAffected != 1)
+    {
+      throw new Exception(rowsAffected + " ROWS ARE NOW DELETED.");
+    }
+  }
 }

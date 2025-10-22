@@ -20,6 +20,7 @@ public class RestaurantsController : ControllerBase
     {
       Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
       restaurantData.CreatorId = userInfo.Id;
+      restaurantData.IsShutdown ??= false;
       Restaurant restaurant = _restaurantsService.CreateRestaurant(restaurantData);
       return Ok(restaurant);
     }
@@ -64,6 +65,21 @@ public class RestaurantsController : ControllerBase
       Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
       Restaurant updatedRestaurant = _restaurantsService.UpdateRestaurant(restaurantId, userInfo.Id, restaurantUpdateData);
       return Ok(updatedRestaurant);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
+
+  [Authorize, HttpDelete("{restaurantId}")]
+  public async Task<ActionResult<string>> DeleteRestaurant(int restaurantId)
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      string message = _restaurantsService.DeleteRestaurant(restaurantId, userInfo.Id);
+      return Ok(message);
     }
     catch (Exception exception)
     {
