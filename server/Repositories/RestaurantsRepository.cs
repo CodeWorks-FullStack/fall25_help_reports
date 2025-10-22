@@ -1,5 +1,6 @@
 
 
+
 namespace help_reports.Repositories;
 
 public class RestaurantsRepository
@@ -25,14 +26,15 @@ public class RestaurantsRepository
     INNER JOIN accounts ON accounts.id = restaurants.creator_id
     WHERE restaurants.id = LAST_INSERT_ID();";
 
-    Restaurant createdRestaurant = _db.Query(
-      sql,
-      (Restaurant restaurant, Profile owner) =>
-      {
-        restaurant.Owner = owner;
-        return restaurant;
-      },
-      restaurantData).SingleOrDefault();
+    // Restaurant createdRestaurant = _db.Query(
+    //   sql,
+    //   (Restaurant restaurant, Profile owner) =>
+    //   {
+    //     restaurant.Owner = owner;
+    //     return restaurant;
+    //   },
+    //   restaurantData).SingleOrDefault();
+    Restaurant createdRestaurant = _db.Query<Restaurant, Profile, Restaurant>(sql, JoinOwner, restaurantData).SingleOrDefault();
 
     return createdRestaurant;
   }
@@ -47,14 +49,29 @@ public class RestaurantsRepository
     INNER JOIN accounts ON accounts.id = restaurants.creator_id
     ORDER BY restaurants.created_at ASC;";
 
-    List<Restaurant> restaurants = _db.Query(
-      sql,
-      (Restaurant restaurant, Profile owner) =>
-      {
-        restaurant.Owner = owner;
-        return restaurant;
-      }).ToList();
+    List<Restaurant> restaurants = _db.Query<Restaurant, Profile, Restaurant>(sql, JoinOwner).ToList();
 
     return restaurants;
+  }
+
+  internal Restaurant GetRestaurantById(int restaurantId)
+  {
+    string sql = @"
+    SELECT
+    restaurants.*,
+    accounts.*
+    FROM restaurants
+    INNER JOIN accounts ON accounts.id = restaurants.creator_id
+    WHERE restaurants.id = @restaurantId;";
+
+    Restaurant restaurant = _db.Query<Restaurant, Profile, Restaurant>(sql, JoinOwner, new { restaurantId }).SingleOrDefault();
+
+    return restaurant;
+  }
+
+  private static Restaurant JoinOwner(Restaurant restaurant, Profile owner)
+  {
+    restaurant.Owner = owner;
+    return restaurant;
   }
 }

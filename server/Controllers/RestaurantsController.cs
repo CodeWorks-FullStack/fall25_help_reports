@@ -42,4 +42,18 @@ public class RestaurantsController : ControllerBase
       return BadRequest(exception.Message);
     }
   }
+
+  [HttpGet("{restaurantId}")]
+  public ActionResult<Restaurant> GetRestaurantById(int restaurantId)
+  {
+    try
+    {
+      Restaurant restaurant = _restaurantsService.GetRestaurantById(restaurantId);
+      return restaurant;
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
 }

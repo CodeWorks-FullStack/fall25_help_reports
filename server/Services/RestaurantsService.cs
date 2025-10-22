@@ -1,5 +1,6 @@
 
 
+
 namespace help_reports.Services;
 
 public class RestaurantsService
@@ -21,5 +22,12 @@ public class RestaurantsService
   {
     List<Restaurant> restaurants = _repository.GetAllRestaurants();
     return restaurants;
+  }
+
+  internal Restaurant GetRestaurantById(int restaurantId)
+  {
+    Restaurant restaurant = _repository.GetRestaurantById(restaurantId);
+    if (restaurant == null) throw new Exception("No restaurant found with the id of: " + restaurantId);
+    return restaurant;
   }
 }
