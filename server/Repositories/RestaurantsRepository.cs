@@ -70,12 +70,6 @@ public class RestaurantsRepository
     return restaurant;
   }
 
-  private static Restaurant JoinOwner(Restaurant restaurant, Profile owner)
-  {
-    restaurant.Owner = owner;
-    return restaurant;
-  }
-
   internal void UpdateRestaurant(Restaurant restaurantData)
   {
     string sql = @"
@@ -105,5 +99,11 @@ public class RestaurantsRepository
     {
       throw new Exception(rowsAffected + " ROWS ARE NOW DELETED.");
     }
+  }
+
+  private static Restaurant JoinOwner(Restaurant restaurant, Profile owner)
+  {
+    restaurant.Owner = owner;
+    return restaurant;
   }
 }

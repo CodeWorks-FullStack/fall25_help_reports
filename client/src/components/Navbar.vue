@@ -17,11 +17,11 @@ watch(theme, () => {
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-md bg-codeworks border-bottom border-vue">
+  <nav class="navbar navbar-expand-md">
     <div class="container gap-2">
-      <RouterLink :to="{ name: 'Home' }" class="d-flex align-items-center text-light">
-        <img class="navbar-brand" alt="logo" src="/img/cw-logo.png" height="45" />
-        <b class="fs-5">Vue Starter</b>
+      <RouterLink :to="{ name: 'Home' }" class="d-flex gap-2 align-items-center fs-2 bg-success px-2">
+        <span class="mdi mdi-rodent"></span>
+        Help Reports
       </RouterLink>
       <!-- collapse button -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-links"
@@ -31,11 +31,6 @@ watch(theme, () => {
       <!-- collapsing menu -->
       <div class="collapse navbar-collapse " id="navbar-links">
         <ul class="navbar-nav">
-          <li>
-            <RouterLink :to="{ name: 'About' }" class="btn text-green selectable">
-              About
-            </RouterLink>
-          </li>
         </ul>
         <!-- LOGIN COMPONENT HERE -->
         <div class="ms-auto">
@@ -53,6 +48,7 @@ watch(theme, () => {
 
 <style lang="scss" scoped>
 a {
+  color: unset;
   text-decoration: none;
 }
 
