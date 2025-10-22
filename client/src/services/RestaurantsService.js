@@ -4,6 +4,11 @@ import { AppState } from "@/AppState.js"
 import { Restaurant } from "@/models/Restaurant.js"
 
 class RestaurantsService {
+  async updateRestaurant(restaurantId, restaurantData) {
+    const response = await api.put(`api/restaurants/${restaurantId}`, restaurantData)
+    logger.log('UPDATED RESTAURANT', response.data)
+    AppState.restaurant = new Restaurant(response.data)
+  }
   async deleteRestaurant(restaurantId) {
     const response = await api.delete(`api/restaurants/${restaurantId}`)
     logger.log('DELETED RESTAURANT', response.data)

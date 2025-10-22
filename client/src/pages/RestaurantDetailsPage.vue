@@ -36,6 +36,16 @@ async function deleteRestaurant() {
     logger.error('COULD NOT DELETE RESTAURANT', error)
   }
 }
+
+async function toggleShutdownStatus() {
+  try {
+    const restaurantData = { isShutdown: !restaurant.value.isShutdown }
+    await restaurantsService.updateRestaurant(route.params.restaurantId, restaurantData)
+  } catch (error) {
+    Pop.error(error)
+    logger.error('COULD NOT UPDATE RESTAURANT', error)
+  }
+}
 </script>
 
 
@@ -49,7 +59,7 @@ async function deleteRestaurant() {
               <b>{{ restaurant.name }}</b>
             </h1>
           </div>
-          <div class="fs-2 bg-danger text-light px-3">
+          <div v-if="restaurant.isShutdown" class="fs-2 bg-danger text-light px-3">
             <span class="mdi mdi-close-circle"></span>
             <b>Currently Shutdown</b>
           </div>
@@ -72,9 +82,9 @@ async function deleteRestaurant() {
                 </div>
               </div>
               <div v-if="account?.id == restaurant.creatorId" class="d-flex gap-5">
-                <button class="btn btn-success fs-4" type="button">
-                  <span class="mdi mdi-door-open"></span>
-                  Re-Open
+                <button @click="toggleShutdownStatus()" class="btn btn-success fs-4" type="button">
+                  <span class="mdi" :class="restaurant.isShutdown ? 'mdi-door-open' : 'mdi-door-closed'"></span>
+                  {{ restaurant.isShutdown ? 'Re-Open' : 'Shutdown' }}
                 </button>
                 <button @click="deleteRestaurant()" class="btn btn-danger fs-4" type="button">
                   <span class="mdi mdi-delete-forever"></span>
