@@ -32,10 +32,18 @@ public class RestaurantsService
     return $"{restaurantToDelete.Name} has been deleted!";
   }
 
-  internal List<Restaurant> GetAllRestaurants()
+  private List<Restaurant> GetAllRestaurants()
   {
     List<Restaurant> restaurants = _repository.GetAllRestaurants();
     return restaurants;
+  }
+
+  internal List<Restaurant> GetAllRestaurants(string userId)
+  {
+    List<Restaurant> restaurants = GetAllRestaurants();
+
+    // FindAll is essentially equivalent to js filter method
+    return restaurants.FindAll(restaurant => restaurant.IsShutdown == false || restaurant.CreatorId == userId);
   }
 
   private Restaurant GetRestaurantById(int restaurantId)
