@@ -3,6 +3,7 @@ import { AppState } from '@/AppState.js';
 import { restaurantsService } from '@/services/RestaurantsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
+import { AxiosError } from 'axios';
 import { computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -20,6 +21,9 @@ async function getRestaurantById() {
   } catch (error) {
     Pop.error(error)
     logger.error('COULD NOT GET RESTAURANT BY ID', error)
+    if (error instanceof AxiosError) {
+      router.push({ name: 'Home' })
+    }
   }
 }
 
