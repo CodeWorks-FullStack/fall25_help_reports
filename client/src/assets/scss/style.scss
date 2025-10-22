@@ -1,7 +1,8 @@
 @import '_main.scss';
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400..800&display=swap');
 
 body{
-  background-color: var(--bs-mushy-pea);
+  background-color: var(--bs-mushy-pea-subtle);
 }
 
 #app {
@@ -21,4 +22,10 @@ main {
   flex-direction: column;
   justify-content: start;
   align-items: end;
+}
+
+
+.baloo-da-2-font {
+  font-family: "Baloo Da 2", sans-serif;
+  font-optical-sizing: auto;
 }

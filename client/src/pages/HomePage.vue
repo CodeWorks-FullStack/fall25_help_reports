@@ -24,7 +24,7 @@ async function getRestaurants() {
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div v-for="restaurant in restaurants" :key="'restaurant-list-item-' + restaurant.id" class="col-md-4">
+      <div v-for="restaurant in restaurants" :key="'restaurant-list-item-' + restaurant.id" class="col-md-4 mb-3">
         <RestaurantListing :restaurant="restaurant" />
       </div>
     </div>
