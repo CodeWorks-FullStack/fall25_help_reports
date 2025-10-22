@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace help_reports.Controllers;
 
 [ApiController]
@@ -45,11 +47,14 @@ public class RestaurantsController : ControllerBase
   }
 
   [HttpGet("{restaurantId}")]
-  public ActionResult<Restaurant> GetRestaurantById(int restaurantId)
+  public async Task<ActionResult<Restaurant>> GetRestaurantById(int restaurantId)
   {
     try
     {
-      Restaurant restaurant = _restaurantsService.GetRestaurantById(restaurantId);
+      // NOTE you can still try to see who is logged in without authorizing the route
+      // NOTE userInfo will be null if the user is not logged in
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      Restaurant restaurant = _restaurantsService.GetRestaurantById(restaurantId, userInfo?.Id);
       return restaurant;
     }
     catch (Exception exception)
@@ -57,6 +62,7 @@ public class RestaurantsController : ControllerBase
       return BadRequest(exception.Message);
     }
   }
+
   [Authorize, HttpPut("{restaurantId}")]
   public async Task<ActionResult<Restaurant>> UpdateRestaurant(int restaurantId, [FromBody] Restaurant restaurantUpdateData)
   {

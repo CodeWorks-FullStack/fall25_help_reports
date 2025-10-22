@@ -38,10 +38,25 @@ public class RestaurantsService
     return restaurants;
   }
 
-  internal Restaurant GetRestaurantById(int restaurantId)
+  private Restaurant GetRestaurantById(int restaurantId)
   {
     Restaurant restaurant = _repository.GetRestaurantById(restaurantId);
+
     if (restaurant == null) throw new Exception("No restaurant found with the id of: " + restaurantId);
+
+    return restaurant;
+  }
+  // NOTE overload
+  // NOTE this method will be called based the number of arguments passed AND types of arguments passed
+  internal Restaurant GetRestaurantById(int restaurantId, string userId)
+  {
+    Restaurant restaurant = GetRestaurantById(restaurantId);
+
+    if (restaurant.IsShutdown == true && restaurant.CreatorId != userId)
+    {
+      throw new Exception("No restaurant found with the id of: " + restaurantId);
+    }
+
     return restaurant;
   }
 
@@ -63,4 +78,6 @@ public class RestaurantsService
 
     return originalRestaurant;
   }
+
+
 }
