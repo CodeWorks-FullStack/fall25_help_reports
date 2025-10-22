@@ -4,11 +4,13 @@ import { restaurantsService } from '@/services/RestaurantsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
 import { computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const restaurant = computed(() => AppState.restaurant)
+const account = computed(() => AppState.account)
 
 const route = useRoute()
+const router = useRouter()
 
 onMounted(getRestaurantById)
 
@@ -18,6 +20,20 @@ async function getRestaurantById() {
   } catch (error) {
     Pop.error(error)
     logger.error('COULD NOT GET RESTAURANT BY ID', error)
+  }
+}
+
+async function deleteRestaurant() {
+  const confirmed = await Pop.confirm(`Are you sure you want to delete ${restaurant.value.name}?`)
+
+  if (!confirmed) return
+
+  try {
+    await restaurantsService.deleteRestaurant(route.params.restaurantId)
+    router.push({ name: 'Home' })
+  } catch (error) {
+    Pop.error(error)
+    logger.error('COULD NOT DELETE RESTAURANT', error)
   }
 }
 </script>
@@ -55,12 +71,12 @@ async function getRestaurantById() {
                   <span>reports</span>
                 </div>
               </div>
-              <div class="d-flex gap-5">
-                <button class="btn btn-success fs-4">
+              <div v-if="account?.id == restaurant.creatorId" class="d-flex gap-5">
+                <button class="btn btn-success fs-4" type="button">
                   <span class="mdi mdi-door-open"></span>
                   Re-Open
                 </button>
-                <button class="btn btn-danger fs-4">
+                <button @click="deleteRestaurant()" class="btn btn-danger fs-4" type="button">
                   <span class="mdi mdi-delete-forever"></span>
                   Delete
                 </button>
