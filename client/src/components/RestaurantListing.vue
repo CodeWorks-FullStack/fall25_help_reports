@@ -25,7 +25,7 @@ defineProps({
         <b class="baloo-da-2-font" :class="restaurant.isShutdown ? 'text-danger' : 'text-mushy-pea'">
           {{ restaurant.name }}
         </b>
-        <p>{{ restaurant.description }}</p>
+        <p class="text-truncate">{{ restaurant.description }}</p>
         <div class="d-flex justify-content-between">
           <div class="d-flex align-items-center gap-1">
             <span class="mdi mdi-account-multiple fs-1 text-mushy-pea"></span>
