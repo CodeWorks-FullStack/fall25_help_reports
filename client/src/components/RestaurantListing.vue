@@ -16,12 +16,15 @@ defineProps({
 
     <div class="shadow">
       <div class="position-relative">
-        <img :src="restaurant.imgUrl" :alt="`A picture of the ${restaurant.name} restaurant`" class="restaurant-img">
+        <img :src="restaurant.imgUrl" :alt="`A picture of the ${restaurant.name} restaurant`" class="restaurant-img"
+          :class="{ shutdown: restaurant.isShutdown }">
         <ProfilePicture :profile="restaurant.owner" height="100"
           class="position-absolute bottom-0 end-0 hover-profile border border-3 border-mushy-pea" />
       </div>
       <div class="py-2 px-3 bg-light">
-        <b class="text-mushy-pea baloo-da-2-font">{{ restaurant.name }}</b>
+        <b class="baloo-da-2-font" :class="restaurant.isShutdown ? 'text-danger' : 'text-mushy-pea'">
+          {{ restaurant.name }}
+        </b>
         <p>{{ restaurant.description }}</p>
         <div class="d-flex justify-content-between">
           <div class="d-flex align-items-center gap-1">
@@ -60,5 +63,9 @@ a {
 
 .shadow:hover .hover-profile {
   opacity: 1;
+}
+
+.shutdown {
+  filter: grayscale(1);
 }
 </style>
