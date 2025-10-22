@@ -1,6 +1,7 @@
 
 
 
+
 namespace help_reports.Repositories;
 
 public class RestaurantsRepository
@@ -73,5 +74,24 @@ public class RestaurantsRepository
   {
     restaurant.Owner = owner;
     return restaurant;
+  }
+
+  internal void UpdateRestaurant(Restaurant restaurantData)
+  {
+    string sql = @"
+    UPDATE restaurants
+    SET
+    name = @Name,
+    description = @Description,
+    img_url = @ImgUrl,
+    is_shutdown = @IsShutdown
+    WHERE id = @Id LIMIT 1;";
+
+    int rowsAffected = _db.Execute(sql, restaurantData);
+
+    if (rowsAffected != 1)
+    {
+      throw new Exception(rowsAffected + " ROWS ARE NOW GONE. CHECK YOUR MYSQL MANUAL FOR THE ANSWER AS TO WHY THIS HAS GONE DOWN LIKE THIS. MUSHY MICK IS WATCHING 👀");
+    }
   }
 }
