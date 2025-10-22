@@ -35,6 +35,7 @@ public class RestaurantsRepository
     //     return restaurant;
     //   },
     //   restaurantData).SingleOrDefault();
+
     Restaurant createdRestaurant = _db.Query<Restaurant, Profile, Restaurant>(sql, JoinOwner, restaurantData).SingleOrDefault();
 
     return createdRestaurant;
@@ -85,7 +86,7 @@ public class RestaurantsRepository
 
     if (rowsAffected != 1)
     {
-      throw new Exception(rowsAffected + " ROWS ARE NOW GONE. CHECK YOUR MYSQL MANUAL FOR THE ANSWER AS TO WHY THIS HAS GONE DOWN LIKE THIS. MUSHY MICK IS WATCHING 👀");
+      throw new Exception(rowsAffected + " ROWS ARE NOW GONE. CHECK YOUR MYSQL MANUAL FOR THE ANSWER AS TO WHY IT HAS GONE DOWN LIKE THIS. MUSHY MICK IS WATCHING 👀");
     }
   }
 

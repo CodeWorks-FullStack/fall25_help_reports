@@ -54,8 +54,8 @@ public class RestaurantsService
 
     return restaurant;
   }
-  // NOTE overload
-  // NOTE this method will be called based the number of arguments passed AND types of arguments passed
+  // NOTE overload method. Methods can share the same name and perform different functionality based on arguments passed to the method
+  // NOTE this method will be called based on the number of arguments passed AND types of arguments passed
   internal Restaurant GetRestaurantById(int restaurantId, string userId)
   {
     Restaurant restaurant = GetRestaurantById(restaurantId);
