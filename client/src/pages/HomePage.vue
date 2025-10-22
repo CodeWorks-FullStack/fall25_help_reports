@@ -1,8 +1,12 @@
 <script setup>
+import { AppState } from '@/AppState.js';
+import RestaurantListing from '@/components/RestaurantListing.vue';
 import { restaurantsService } from '@/services/RestaurantsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
+
+const restaurants = computed(() => AppState.restaurants)
 
 onMounted(getRestaurants)
 
@@ -20,8 +24,8 @@ async function getRestaurants() {
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-4">
-
+      <div v-for="restaurant in restaurants" :key="'restaurant-list-item-' + restaurant.id" class="col-md-4">
+        <RestaurantListing :restaurant="restaurant" />
       </div>
     </div>
   </div>
