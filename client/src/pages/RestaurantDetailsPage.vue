@@ -72,8 +72,8 @@ async function toggleShutdownStatus() {
           <img :src="restaurant.imgUrl" :alt="restaurant.name" class="restaurant-img">
           <div class="px-3 py-2">
             <p class="mb-5">{{ restaurant.description }}</p>
-            <div class="d-flex align-items-center justify-content-between">
-              <div class="d-flex gap-5">
+            <div class="d-md-flex align-items-center justify-content-between">
+              <div class="d-flex gap-5 mb-3  mb-md-0">
                 <div class="d-flex align-items-center gap-1">
                   <span class="mdi mdi-account-multiple fs-1 text-mushy-pea"></span>
                   <b>{{ restaurant.visits }}</b>
@@ -85,7 +85,7 @@ async function toggleShutdownStatus() {
                   <span>reports</span>
                 </div>
               </div>
-              <div v-if="account?.id == restaurant.creatorId" class="d-flex gap-5">
+              <div v-if="account?.id == restaurant.creatorId" class="d-flex flex-wrap gap-5 justify-content-end">
                 <button @click="toggleShutdownStatus()" class="btn btn-success fs-4" type="button">
                   <span class="mdi" :class="restaurant.isShutdown ? 'mdi-door-open' : 'mdi-door-closed'"></span>
                   {{ restaurant.isShutdown ? 'Re-Open' : 'Shutdown' }}
