@@ -1,5 +1,6 @@
 <script setup>
 import { Restaurant } from '@/models/Restaurant.js';
+import ProfilePicture from './ProfilePicture.vue';
 
 
 defineProps({
@@ -11,7 +12,10 @@ defineProps({
 
 <template>
   <div class="shadow">
-    <img :src="restaurant.imgUrl" :alt="`A picture of the ${restaurant.name} restaurant`" class="restaurant-img">
+    <div class="position-relative">
+      <img :src="restaurant.imgUrl" :alt="`A picture of the ${restaurant.name} restaurant`" class="restaurant-img">
+      <ProfilePicture :profile="restaurant.owner" height="100" class="position-absolute bottom-0 end-0 hover-profile" />
+    </div>
     <div class="py-2 px-3 bg-light">
       <b class="text-mushy-pea baloo-da-2-font">{{ restaurant.name }}</b>
       <p>{{ restaurant.description }}</p>
@@ -37,5 +41,14 @@ defineProps({
   width: 100%;
   aspect-ratio: 1/1;
   object-fit: cover;
+}
+
+.hover-profile {
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.shadow:hover .hover-profile {
+  opacity: 1;
 }
 </style>
