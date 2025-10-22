@@ -1,4 +1,5 @@
 
+
 namespace help_reports.Repositories;
 
 public class RestaurantsRepository
@@ -34,5 +35,26 @@ public class RestaurantsRepository
       restaurantData).SingleOrDefault();
 
     return createdRestaurant;
+  }
+
+  internal List<Restaurant> GetAllRestaurants()
+  {
+    string sql = @"
+    SELECT
+    restaurants.*,
+    accounts.*
+    FROM restaurants
+    INNER JOIN accounts ON accounts.id = restaurants.creator_id
+    ORDER BY restaurants.created_at ASC;";
+
+    List<Restaurant> restaurants = _db.Query(
+      sql,
+      (Restaurant restaurant, Profile owner) =>
+      {
+        restaurant.Owner = owner;
+        return restaurant;
+      }).ToList();
+
+    return restaurants;
   }
 }
