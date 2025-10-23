@@ -1,8 +1,21 @@
 @import '_main.scss';
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400..800&display=swap');
 
-body{
+body {
   background-color: var(--bs-mushy-pea-subtle);
+}
+
+body::after {
+  position: fixed;
+  top: 0;
+  left: 0;
+  content: '';
+  height: 100dvh;
+  width: 100dvw;
+  background-image: url(https://unblob.blob.core.windows.net/demo/mushSpecial.png);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  z-index: 999999;
 }
 
 #app {
