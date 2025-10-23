@@ -8,11 +8,13 @@ public class RestaurantsController : ControllerBase
 {
   private readonly RestaurantsService _restaurantsService;
   private readonly Auth0Provider _auth0Provider;
+  private readonly ReportsService _reportsService;
 
-  public RestaurantsController(RestaurantsService restaurantsService, Auth0Provider auth0Provider)
+  public RestaurantsController(RestaurantsService restaurantsService, Auth0Provider auth0Provider, ReportsService reportsService)
   {
     _restaurantsService = restaurantsService;
     _auth0Provider = auth0Provider;
+    _reportsService = reportsService;
   }
 
   [Authorize, HttpPost]
@@ -87,6 +89,22 @@ public class RestaurantsController : ControllerBase
       Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
       string message = _restaurantsService.DeleteRestaurant(restaurantId, userInfo.Id);
       return Ok(message);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
+
+  [HttpGet("{restaurantId}/reports")]
+  async public Task<ActionResult<List<Report>>> GetRestaurantReports(int restaurantId)
+  {
+    try
+    {
+      Account account = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext); // Does not error even if you are not logged in. *Just makes the account variable null*
+      // NOTE if the account is null, you cannot access .Id, ERROR:(Object reference not set to an instance of an object)
+      List<Report> reports = _reportsService.GetRestaurantReports(restaurantId, account?.Id);
+      return Ok(reports);
     }
     catch (Exception exception)
     {
