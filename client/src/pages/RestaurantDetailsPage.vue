@@ -1,5 +1,7 @@
 <script setup>
 import { AppState } from '@/AppState.js';
+import ReportCard from '@/components/ReportCard.vue';
+import { reportsService } from '@/services/ReportsService.js';
 import { restaurantsService } from '@/services/RestaurantsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
@@ -9,11 +11,15 @@ import { useRoute, useRouter } from 'vue-router';
 
 const restaurant = computed(() => AppState.restaurant)
 const account = computed(() => AppState.account)
+const reports= computed(()=> AppState.reports)
 
 const route = useRoute()
 const router = useRouter()
 
-onMounted(getRestaurantById)
+onMounted(()=>{
+  getRestaurantById()
+  getReportsForRestaurant()
+})
 
 async function getRestaurantById() {
   try {
@@ -48,6 +54,17 @@ async function toggleShutdownStatus() {
   } catch (error) {
     Pop.error(error)
     logger.error('COULD NOT UPDATE RESTAURANT', error)
+  }
+}
+
+async function getReportsForRestaurant(){
+  try {
+    logger.log('getting reports')
+    await reportsService.getReportsForRestaurant(route.params.restaurantId)
+  }
+  catch (error){
+    logger.error(error)
+    Pop.error(error, 'could not get restaurant reports');
   }
 }
 </script>
@@ -100,7 +117,16 @@ async function toggleShutdownStatus() {
         </div>
       </div>
     </div>
+    <!-- SECTION reports -->
+    <section class="row g-3 my-3">
+
+      <div v-for="report in reports" :key="`report-card-${report.id}`">
+        <ReportCard :report/>
+      </div>
+
+    </section>
   </div>
+  <!-- SECTION loader -->
   <div v-else class="container-fluid">
     <div class="row">
       <div class="col-12">

@@ -1,4 +1,5 @@
 <script setup>
+import { AppState } from '@/AppState.js';
 import Login from './Login.vue';
 
 
@@ -10,7 +11,7 @@ import Login from './Login.vue';
     <RouterLink :to="{ name: 'Home' }" class="">
       <img src="@/assets/img/helpLogo.png" alt="help reports logo" class="img-fluid">
     </RouterLink>
-      <button data-bs-toggle="modal" data-bs-target="#create-report" class="btn btn-mushy-pea rounded-0 p-3 fs-4 fw-bold">Report!</button>
+      <button v-if="AppState.account" data-bs-toggle="modal" data-bs-target="#create-report" class="btn btn-mushy-pea rounded-0 p-3 fs-4 fw-bold">Report!</button>
     <div>
       <Login/>
     </div>
