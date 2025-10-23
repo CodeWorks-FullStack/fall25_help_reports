@@ -23,3 +23,21 @@ CREATE TABLE
   );
 
 DROP TABLE restaurants;
+
+-- =============== Reports ================
+CREATE TABLE reports(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  title VARCHAR(500) NOT NULL,
+  body VARCHAR(2000),
+  score int NOT NULL DEFAULT 1,
+  img_url VARCHAR(500),
+  creator_id VARCHAR(255) NOT NULL,
+  restaurant_id int NOT NULL,
+
+  FOREIGN KEY (creator_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE
+);
+
+DROP TABLE reports;
