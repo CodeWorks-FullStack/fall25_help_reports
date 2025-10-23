@@ -52,7 +52,7 @@ public class RestaurantsRepository
     INNER JOIN accounts ON accounts.id = restaurants.creator_id
     LEFT JOIN reports ON reports.restaurant_id = restaurants.id
     GROUP BY restaurants.id
-    ORDER BY restaurants.created_at ASC;";
+    ORDER BY restaurants.visits DESC;";
 
     List<Restaurant> restaurants = _db.Query<Restaurant, Profile, Restaurant>(sql, JoinOwner).ToList();
 
@@ -85,6 +85,7 @@ public class RestaurantsRepository
     name = @Name,
     description = @Description,
     img_url = @ImgUrl,
+    visits = @Visits,
     is_shutdown = @IsShutdown
     WHERE id = @Id LIMIT 1;";
 

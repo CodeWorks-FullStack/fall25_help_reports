@@ -58,6 +58,7 @@ public class RestaurantsController : ControllerBase
       // NOTE userInfo will be null if the user is not logged in
       Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
       Restaurant restaurant = _restaurantsService.GetRestaurantById(restaurantId, userInfo?.Id);
+      _restaurantsService.increaseRestaurantVisits(restaurant); // increase works better here cause it can go around the logic we might include in our service
       return restaurant;
     }
     catch (Exception exception)

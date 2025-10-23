@@ -16,6 +16,7 @@ class RestaurantsService {
   async getRestaurantById(restaurantId) {
     AppState.restaurant = null
     const response = await api.get(`api/restaurants/${restaurantId}`)
+    const deleteme = await api.get(`api/restaurants/${restaurantId}/reports`)
     logger.log('GOT RESTAURANT 🏩', response.data)
     AppState.restaurant = new Restaurant(response.data)
   }

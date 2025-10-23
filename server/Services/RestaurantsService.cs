@@ -51,7 +51,10 @@ public class RestaurantsService
     Restaurant restaurant = _repository.GetRestaurantById(restaurantId);
 
     if (restaurant == null) throw new Exception("No restaurant found with the id of: " + restaurantId);
-
+    // NOTE this would pretty much increase the view count of restaurants
+    // this doesn't work well here because multiple requests ask for this to use as validation
+    // restaurant.Visits++;
+    // _repository.UpdateRestaurant(restaurant);
     return restaurant;
   }
   // NOTE overload method. Methods can share the same name and perform different functionality based on arguments passed to the method
@@ -77,6 +80,7 @@ public class RestaurantsService
       throw new Exception("YOU CANNOT UPDATE ANOTHER USER'S RESTAURANT, MUSHY MICK IS NOW HIDING UNDER YOUR BED");
     }
 
+    // NOTE visits is not here so users cannot inflate their own visits
     originalRestaurant.Description = restaurantUpdateData.Description ?? originalRestaurant.Description;
     originalRestaurant.ImgUrl = restaurantUpdateData.ImgUrl ?? originalRestaurant.ImgUrl;
     originalRestaurant.Name = restaurantUpdateData.Name ?? originalRestaurant.Name;
@@ -85,6 +89,13 @@ public class RestaurantsService
     _repository.UpdateRestaurant(originalRestaurant);
 
     return originalRestaurant;
+  }
+
+  public Restaurant increaseRestaurantVisits(Restaurant restaurant)
+  {
+    restaurant.Visits++;
+    _repository.UpdateRestaurant(restaurant);
+    return restaurant;
   }
 
 
