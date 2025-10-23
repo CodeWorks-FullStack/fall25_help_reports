@@ -24,6 +24,31 @@ CREATE TABLE
 
 DROP TABLE restaurants;
 
+
+-- === Restaurants with report count
+
+SELECT 
+restaurants.id,
+restaurants.name,
+COUNT(reports.id) AS ReportCount,
+AVG(reports.score) AS AverageScore,
+SUM(reports.score) AS TotalScore
+FROM restaurants
+LEFT JOIN reports ON reports.restaurant_id = restaurants.id
+GROUP BY restaurants.id
+ORDER BY ReportCount DESC
+;
+
+
+SELECT
+    restaurants.*,
+    accounts.*
+    FROM restaurants
+    INNER JOIN accounts ON accounts.id = restaurants.creator_id
+    ORDER BY restaurants.created_at ASC;;
+---
+
+
 -- =============== Reports ================
 CREATE TABLE reports(
   id INT PRIMARY KEY AUTO_INCREMENT,

@@ -46,9 +46,12 @@ public class RestaurantsRepository
     string sql = @"
     SELECT
     restaurants.*,
+    COUNT(reports.id) AS ReportCount,
     accounts.*
     FROM restaurants
     INNER JOIN accounts ON accounts.id = restaurants.creator_id
+    LEFT JOIN reports ON reports.restaurant_id = restaurants.id
+    GROUP BY restaurants.id
     ORDER BY restaurants.created_at ASC;";
 
     List<Restaurant> restaurants = _db.Query<Restaurant, Profile, Restaurant>(sql, JoinOwner).ToList();
@@ -61,10 +64,13 @@ public class RestaurantsRepository
     string sql = @"
     SELECT
     restaurants.*,
+    COUNT(reports.id) AS ReportCount,
     accounts.*
     FROM restaurants
     INNER JOIN accounts ON accounts.id = restaurants.creator_id
-    WHERE restaurants.id = @restaurantId;";
+    LEFT JOIN reports ON reports.restaurant_id = restaurants.id
+    WHERE restaurants.id = @restaurantId
+    GROUP BY restaurants.id;";
 
     Restaurant restaurant = _db.Query<Restaurant, Profile, Restaurant>(sql, JoinOwner, new { restaurantId }).SingleOrDefault();
 
